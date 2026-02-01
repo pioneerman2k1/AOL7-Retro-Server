@@ -222,7 +222,7 @@ def start_server():
                     if len(payload) >= 2 and struct.unpack(">H", payload[0:2])[0] == 0x7F7F:
                         send_ack(conn, p3, seq_pkt)
                         p3.mode = 'normal'
-                        log("Mode: NORMAL. Waitung for client...")
+                        log("Mode: NORMAL. Waiting for client...")
                         continue
                     send_ack(conn, p3, seq_pkt)
 
@@ -270,7 +270,7 @@ def start_server():
                                     state_advance = struct.pack("<II", 0x00000002, 0x00000000)
                                     send_packet(conn, p3, build_p3_packet(0x0001, 0x0003, state_advance), "State Advance (AUTH->ONLINE)")
                                 else:
-                                    log("!!! ERROR: Packet strange length.")
+                                    log("!!! ERROR: Unexpected packet length.")
 
                             elif opcode == 0x0001:
                                 log(">>> 🌍 DISCOVERY REQUEST RECEIVED!")
