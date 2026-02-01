@@ -6,7 +6,7 @@ import sys
 import traceback
 from datetime import datetime
 
-# --- KONFIGURATION ---
+# --- Configuration ---
 HOST = '0.0.0.0'
 PORT = 5190
 SEED = 0x5443
@@ -174,13 +174,13 @@ def start_server():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((HOST, PORT))
     server.listen(1)
-    log(f"AOL Server v0.44 (TRUE ECHO FIX) bereit auf Port {PORT}")
+    log(f"AOL 7 Server Alpha 0.2.148 (TRUE ECHO FIX) listening on Port {PORT}")
 
     while True:
         try:
             conn, addr = server.accept()
             conn.settimeout(30.0)
-            log(f"!!! NEUE VERBINDUNG von {addr} !!!")
+            log(f"!!! Incoming connection from {addr} !!!")
             
             p3 = P3Handler()
             p3.mode = 'control'
@@ -193,11 +193,11 @@ def start_server():
                     log("Timeout.")
                     break
                 except ConnectionResetError:
-                    log("Verbindung RST.")
+                    log("Connection RST.")
                     break
                 
                 if not data:
-                    log("Verbindung FIN.")
+                    log("Connection FIN.")
                     break
 
                 if data[0] != 0x5A: continue
@@ -222,7 +222,7 @@ def start_server():
                     if len(payload) >= 2 and struct.unpack(">H", payload[0:2])[0] == 0x7F7F:
                         send_ack(conn, p3, seq_pkt)
                         p3.mode = 'normal'
-                        log("Mode: NORMAL. Warten auf Client-Anfrage...")
+                        log("Mode: NORMAL. Waitung for client...")
                         continue
                     send_ack(conn, p3, seq_pkt)
 
